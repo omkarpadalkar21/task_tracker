@@ -2,14 +2,18 @@
 services:
   # Defines a service named 'db'.
   db:
-    # Specifies the Docker image to use for this service (latest PostgreSQL).
-    image: postgres:latest
-    # Maps port 5432 on the host to port 5432 in the container.
+    # Specifies the Docker image to use for this service (latest MySQL).
+    image: mysql:8.0
+    # Maps port 3306 on the host to port 3306 in the container.
     ports:
-      - "5432:5432"
+      - "3306:3306"
     # Policy to always restart the container if it stops.
     restart: always
     # Sets environment variables inside the container.
     environment:
-      # Sets the password for the default postgres user.
-      POSTGRES_PASSWORD: changemeinprod!
+      # Sets the password for the root user.
+      MYSQL_ROOT_PASSWORD: changemeinprod!
+      # Sets the default database to create.
+      MYSQL_DATABASE: task_tracker
+      # Use UTC timezone to avoid timezone issues
+      TZ: UTC
