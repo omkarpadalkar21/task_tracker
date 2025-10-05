@@ -25,12 +25,10 @@ public class Task {
     private LocalDateTime dueDate;
 
     @Column(name = "status", nullable = false)
-    private TasKStatus status;
+    private TaskStatus status;
 
     @Column(name = "priority", nullable = false)
     private TaskPriority priority;
-
-    // Many tasks can belong to one task list (many-to-one relationship),fetch = FetchType.LAZY specifies that the associated TaskList is loaded lazily (on-demand) when accessed, not when the Task is fetched
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_list_id")
@@ -45,14 +43,14 @@ public class Task {
     public Task() {
     }
 
-    public Task(UUID id, String title, String description, LocalDateTime dueDate, TasKStatus status, TaskPriority priority, TaskList taskList, LocalDateTime created, LocalDateTime updated) {
+    public Task(UUID id, String title, String description, LocalDateTime dueDate, TaskStatus status, TaskPriority priority, TaskList taskList, LocalDateTime created, LocalDateTime updated) {
+        this.taskList = taskList;
         this.id = id;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.status = status;
         this.priority = priority;
-        this.taskList = taskList;
         this.created = created;
         this.updated = updated;
     }
@@ -89,11 +87,11 @@ public class Task {
         this.dueDate = dueDate;
     }
 
-    public TasKStatus getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(TasKStatus status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 
@@ -131,6 +129,7 @@ public class Task {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
         return Objects.equals(id, task.id) && Objects.equals(title, task.title) && Objects.equals(description, task.description) && Objects.equals(dueDate, task.dueDate) && status == task.status && priority == task.priority && Objects.equals(taskList, task.taskList) && Objects.equals(created, task.created) && Objects.equals(updated, task.updated);

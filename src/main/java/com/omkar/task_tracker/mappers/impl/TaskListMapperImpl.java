@@ -1,9 +1,9 @@
 package com.omkar.task_tracker.mappers.impl;
 
 import com.omkar.task_tracker.domain.dto.TaskListDto;
-import com.omkar.task_tracker.domain.entities.TasKStatus;
 import com.omkar.task_tracker.domain.entities.Task;
 import com.omkar.task_tracker.domain.entities.TaskList;
+import com.omkar.task_tracker.domain.entities.TaskStatus;
 import com.omkar.task_tracker.mappers.TaskListMapper;
 import com.omkar.task_tracker.mappers.TaskMapper;
 import org.springframework.stereotype.Component;
@@ -27,12 +27,12 @@ public class TaskListMapperImpl implements TaskListMapper {
                 taskListDto.title(),
                 taskListDto.description(),
                 Optional.ofNullable(taskListDto.tasks())
-                        .map(tasks -> tasks.stream().map(taskMapper::fromDto)
+                        .map(tasks -> tasks.stream()
+                                .map(taskMapper::fromDto)
                                 .toList()
                         ).orElse(null),
                 null,
                 null
-
         );
     }
 
@@ -47,19 +47,22 @@ public class TaskListMapperImpl implements TaskListMapper {
                         .orElse(0),
                 calculateTaskListProgress(taskList.getTasks()),
                 Optional.ofNullable(taskList.getTasks())
-                        .map(tasks -> tasks.stream().map(taskMapper::toDto)
-                                .toList()
+                        .map(tasks ->
+                                tasks.stream().map(taskMapper::toDto).toList()
                         ).orElse(null)
         );
     }
 
     private Double calculateTaskListProgress(List<Task> tasks) {
-        if (null == tasks) {
+        if(null == tasks) {
             return null;
         }
 
-        long closedTaskCount = tasks.stream().filter(task -> TasKStatus.CLOSED == task.getStatus()).count();
+        long closedTaskCount = tasks.stream().filter(task ->
+                TaskStatus.CLOSED == task.getStatus()
+        ).count();
 
         return (double) closedTaskCount / tasks.size();
     }
+
 }

@@ -1,19 +1,18 @@
-# Defines the services that make up your application.
 services:
-  # Defines a service named 'db'.
+  # Our PostgreSQL database
   db:
-    # Specifies the Docker image to use for this service (latest MySQL).
-    image: mysql:8.0
-    # Maps port 3306 on the host to port 3306 in the container.
+    # The Docker image of postgres -- we're using the latest.
+    image: postgres:latest
+    # The ports to expose to the host container
+    # 5432 is the default PostgreSQL port
     ports:
-      - "3306:3306"
-    # Policy to always restart the container if it stops.
+      - "5432:5432"
+    # If we accidentally kill the running container, Docker Compose
+    # will restart it.
     restart: always
-    # Sets environment variables inside the container.
+    # The PostgreSQL Docker container uses environment variables to
+    # read configuration, here we set the password.
+    # ⚠️ - Do no store plaintext passwords in source control. We
+    #      do so here as this is a builder.
     environment:
-      # Sets the password for the root user.
-      MYSQL_ROOT_PASSWORD: changemeinprod!
-      # Sets the default database to create.
-      MYSQL_DATABASE: task_tracker
-      # Use UTC timezone to avoid timezone issues
-      TZ: UTC
+      POSTGRES_PASSWORD: changemeinprod!

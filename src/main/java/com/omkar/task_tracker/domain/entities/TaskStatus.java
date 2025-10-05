@@ -1,5 +1,5 @@
 package com.omkar.task_tracker.domain.entities;
 
-public enum TasKStatus {
-    OPEN,CLOSED
+public enum TaskStatus {
+    OPEN, CLOSED
 }

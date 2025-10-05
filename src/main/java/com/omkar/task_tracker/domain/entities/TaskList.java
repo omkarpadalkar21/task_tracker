@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "task_list")
+@Table(name = "task_lists")
 public class TaskList {
 
     @Id
@@ -22,11 +22,10 @@ public class TaskList {
     @Column(name = "description")
     private String description;
 
-    // One TaskList can have multiple Tasks. The 'tasksList' holds all tasks belonging to this TaskList.
-    // The 'mappedBy = "taskList"' means the Task entity has a field named 'taskList' that owns the relationship.
-    // CascadeType.REMOVE deletes all tasks if the TaskList is deleted. CascadeType.PERSIST saves tasks when TaskList is saved.
-    @OneToMany(mappedBy = "taskList",cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
-    List<Task> tasks;
+    @OneToMany(mappedBy = "taskList", cascade = {
+            CascadeType.REMOVE, CascadeType.PERSIST
+    })
+    private List<Task> tasks;
 
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
@@ -96,6 +95,7 @@ public class TaskList {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TaskList taskList = (TaskList) o;
         return Objects.equals(id, taskList.id) && Objects.equals(title, taskList.title) && Objects.equals(description, taskList.description) && Objects.equals(tasks, taskList.tasks) && Objects.equals(created, taskList.created) && Objects.equals(updated, taskList.updated);
