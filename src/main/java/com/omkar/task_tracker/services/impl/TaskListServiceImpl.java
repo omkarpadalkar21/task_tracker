@@ -3,6 +3,7 @@ package com.omkar.task_tracker.services.impl;
 import com.omkar.task_tracker.domain.entities.TaskList;
 import com.omkar.task_tracker.repositories.TaskListRepository;
 import com.omkar.task_tracker.services.TaskListService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -50,6 +51,7 @@ public class TaskListServiceImpl implements TaskListService {
         return taskListRepository.findById(id);
     }
 
+    @Transactional
     @Override
     public TaskList updateTaskList(UUID taskListId, TaskList taskList) {
         if (null == taskList.getId()) {
